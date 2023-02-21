@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./three.js";
 
-export default function threeTest() {
+export default function threeTest({ xSpeed, ySpeed }) {
   useEffect(() => {
+    let exit = false;
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75,
@@ -23,16 +24,19 @@ export default function threeTest() {
     camera.position.z = 5;
 
     function animate() {
+      if (exit === true) return;
       requestAnimationFrame(animate);
 
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+      cube.rotation.x += Number(xSpeed);
+      cube.rotation.y += Number(ySpeed);
 
       renderer.render(scene, camera);
     }
-
     animate();
-  }, []);
+    return () => {
+      exit = true;
+    }
+  }, [xSpeed, ySpeed]);
 
   return <div id="threeTest"></div>;
 }
