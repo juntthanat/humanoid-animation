@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./three.js";
-import {GUI} from 'dat.gui'
 
-export default function three_animation({ xSpeed, ySpeed }) {
+export default function three_animation({ xSpeed, ySpeed, handleAngle }) {
   useEffect(() => {
     let exit = false;
     const scene = new THREE.Scene();
@@ -57,7 +56,9 @@ export default function three_animation({ xSpeed, ySpeed }) {
       base.rotation.x += Number(xSpeed);
       base.rotation.y += Number(ySpeed);
 
-      shoulder.rotation.x += 0.01
+      shoulder.rotation.x = Number(handleAngle);
+
+      window.THREE.Cache.clear() // Prevent Context Lost
 
       renderer.render(scene, camera);
     }
@@ -65,7 +66,7 @@ export default function three_animation({ xSpeed, ySpeed }) {
     return () => {
       exit = true;
     }
-  }, [xSpeed, ySpeed]);
+  }, [xSpeed, ySpeed, handleAngle]);
 
   return <div id="three_animation"></div>;
 }
