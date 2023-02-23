@@ -3,8 +3,8 @@ import "./App.css";
 import Three_animation from "./three/three_animation";
 
 function App() {
-  const [xSpeed, setXSpeed] = useState(0.01);
-  const [ySpeed, setYSpeed] = useState(0.01);
+  const [xSpeed, setXSpeed] = useState(0);
+  const [ySpeed, setYSpeed] = useState(0.005);
 
   return (
     <div className="App">
