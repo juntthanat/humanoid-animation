@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./three.js";
 
-export default function threeTest({ xSpeed, ySpeed }) {
+export default function three_animation({ xSpeed, ySpeed }) {
   useEffect(() => {
     let exit = false;
     const scene = new THREE.Scene();
@@ -14,7 +14,7 @@ export default function threeTest({ xSpeed, ySpeed }) {
 
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById("threeTest").replaceChildren(renderer.domElement);
+    document.getElementById("three_animation").replaceChildren(renderer.domElement);
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -38,5 +38,5 @@ export default function threeTest({ xSpeed, ySpeed }) {
     }
   }, [xSpeed, ySpeed]);
 
-  return <div id="threeTest"></div>;
+  return <div id="three_animation"></div>;
 }

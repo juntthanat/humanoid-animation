@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import ThreeTest from "./threeTest/threeTest";
+import Three_animation from "./three/three_animation";
 
 function App() {
   const [xSpeed, setXSpeed] = useState(0.01);
@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <div id="three">
-        <ThreeTest xSpeed={xSpeed} ySpeed={ySpeed}></ThreeTest>
+        <Three_animation xSpeed={xSpeed} ySpeed={ySpeed}></Three_animation>
       </div>
       <div id="overlay">
         <div id="control">
