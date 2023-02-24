@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import "./three.js";
 
-export default function three_animation({ xSpeed, ySpeed, handleAngle }) {
+export default function three_animation({ xSpeed, ySpeed, zSpeed, handleAngle }) {
   useEffect(() => {
     let exit = false;
     const scene = new THREE.Scene();
@@ -55,6 +55,7 @@ export default function three_animation({ xSpeed, ySpeed, handleAngle }) {
 
       base.rotation.x += Number(xSpeed);
       base.rotation.y += Number(ySpeed);
+      base.rotation.z += Number(zSpeed);
 
       shoulder.rotation.x = Number(handleAngle);
 
@@ -66,7 +67,7 @@ export default function three_animation({ xSpeed, ySpeed, handleAngle }) {
     return () => {
       exit = true;
     }
-  }, [xSpeed, ySpeed, handleAngle]);
+  }, [xSpeed, ySpeed, zSpeed, handleAngle]);
 
   return <div id="three_animation"></div>;
 }
