@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "./three.js";
+import {createHandle} from "./object/handle"
 
 export default function three_animation({ xSpeed, ySpeed, zSpeed, handleAngle }) {
   useEffect(() => {
@@ -36,10 +37,15 @@ export default function three_animation({ xSpeed, ySpeed, zSpeed, handleAngle })
     lowerArm.translateY(1);
     shoulder.add(lowerArm);
 
-    geometry = new THREE.SphereGeometry(0.6,20,20); // (radius, width segment, height segment)
-    var handle = new THREE.Mesh(geometry, material);
-    handle.translateY(1);
+    // geometry = new THREE.SphereGeometry(0.6,20,20); // (radius, width segment, height segment)
+    // var handle = new THREE.Mesh(geometry, material);
+    // handle.translateY(1);
+
+    var handle = createHandle();
+
     lowerArm.add(handle);
+
+    
 
     var light = new THREE.DirectionalLight(0xffffff, 1.0);
     light.position.set(10,5,10);
