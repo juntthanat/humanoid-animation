@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./three.js";
 import {createHandle} from "./object/handle"
 
-export default function three_animation({ xSpeed, ySpeed, zSpeed, handleAngle }) {
+export default function three_animation() {
   useEffect(() => {
     let exit = false;
     const scene = new THREE.Scene();
@@ -73,7 +73,7 @@ export default function three_animation({ xSpeed, ySpeed, zSpeed, handleAngle })
     return () => {
       exit = true;
     }
-  }, [xSpeed, ySpeed, zSpeed, handleAngle]);
+  }, []);
 
   return <div id="three_animation"></div>;
 }

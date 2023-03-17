@@ -1,36 +1,76 @@
-import { useState} from "react";
+import { useState, useEffect} from "react";
 import "./App.css";
+import "aframe"
 import Three_animation from "./three/three_animation";
 
 function App() {
-  const [xSpeed, setXSpeed] = useState(0);
-  const [ySpeed, setYSpeed] = useState(0);
-  const [zSpeed, setZSpeed] = useState(0);
-  const [handleAngle, setHandleAngle] = useState(90);
+  useEffect(() => {
+    var lever = document.querySelector("#lever");
+    var handle = true;
+    lever.addEventListener('click', function(e){
+      if (handle == true){
+        lever.setAttribute('animation', {
+          property: 'rotation',
+          from: '45 0 90',
+          to: {x, y, z},
+          dur: '2500',
+          pauseEvents: 'mouseleave',
+          resumeEvents: 'mouseenter'
+        })
+        handle = false;
+      } else {
+        lever.setAttribute('animation', {
+          property: 'rotation',
+          from: '-45 0 90',
+          to: '45 0 90',
+          dur: '2500',
+          pauseEvents: 'mouseleave',
+          resumeEvents: 'mouseenter'
+        })
+        handle = true;
+      }
+      
+    });
+  });
 
-  function changeSpeed(){
-    setXSpeed(document.getElementById("xSpeed").value);
-    setYSpeed(document.getElementById("ySpeed").value);
-    setZSpeed(document.getElementById("zSpeed").value);
-  }
-
-  function changeHandle(){
-    setHandleAngle(document.getElementById("handleAngle").value);
-  }
+  var x = -45;
+  var y = 0;
+  var z = 90;
 
   return (
     <div className="App">
-      <div id="three">
-        <Three_animation xSpeed={xSpeed} ySpeed={ySpeed} zSpeed={zSpeed} handleAngle={handleAngle}></Three_animation>
-      </div>
-      <div id="overlay">
-        <div id="control">
-          Rotation x {xSpeed * 1000}<input id="xSpeed" type="range" min="0" max={0.1} step={0.001} onChange={changeSpeed}></input>
-          Rotation y {ySpeed * 1000}<input id="ySpeed" type="range" min="0" max={0.1} step={0.001} onChange={changeSpeed} ></input>
-          Rotation z {zSpeed * 1000}<input id="zSpeed" type="range" min="0" max={0.1} step={0.001} onChange={changeSpeed} ></input>
-          Handle Angle {(Number(handleAngle) + 2) * 45}<input id="handleAngle" type="range" min={-2} max={2} step={0.1} onChange={changeHandle} ></input>
-        </div>
-      </div>
+
+      <a-scene >
+      <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
+      <a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
+        <a-entity 
+          geometry="primitive:box; height:0.5; width:2; depth:2"
+          material="color: grey;"
+          position="0 0 0"
+        >
+        </a-entity>
+        <a-entity 
+          id="lever"
+          geometry="primitive: cylinder; height: 0.5; thetaLength: 360; radius: 0.9" 
+          position="0 0 0;" 
+          material="color: lightgrey;"
+          rotation="0 0 90;"
+        >
+          <a-entity 
+          geometry="primitive:cylinder; radius: 0.2; height: 3;"
+          material="color: lightgrey;"
+          position="1.5 0 0"
+          rotation="0 0 90"
+          ></a-entity>
+          <a-entity 
+          position="3 0 0"
+          material="color: tomato"
+          geometry="primitive: sphere; radius: 0.5"
+          animation__mouseenter="property: components.material.material.color; type: color; to: blue; startEvents: mouseenter; dur: 500"
+          animation__mouseleave="property: components.material.material.color; type: color; to: red; startEvents: mouseleave; dur: 500"
+          ></a-entity>
+        </a-entity>
+      </a-scene>
     </div>
   );
 }

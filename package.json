@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-three/fiber": "^8.11.2",
     "@types/three": "^0.149.0",
+    "aframe": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.149.0"
