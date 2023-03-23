@@ -3,23 +3,46 @@ import "./App.css";
 import "aframe";
 import "./three/three.js";
 
-function App() {
-  const [rotationX, setRotationX] = useState(0);
-  const [isReady, setIsReady] = useState(false);
-  const modelRef = useRef();
-
   // Run on Ipad
   // npm run dev -- --host 0.0.0.0
+
+function App() {
+  const [isReady, setIsReady] = useState(false);
+  const modelRef = useRef();
+  
+  // Part State
+  const [rotationX, setRotationX] = useState(0);
+  // End
+
 
   // Test Rotation
   useEffect(() => {
     if (isReady) {
       // Use Blender to check the name and path
       const model = modelRef.current;
+      // Initialize Bone
+      var head = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0];
+      var spine = model?.children[0]?.children[0]?.children[0]?.children[0];
       var leftArm = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[1]?.children[0];
-      leftArm.rotation.y = degreetoradian(rotationX);
+      var leftForeArm = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[1]?.children[0]?.children[0];
+      var rightArm = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[2]?.children[0];
+      var rightForeArm = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[2]?.children[0]?.children[0];
+      var leftUpLeg = model?.children[0]?.children[0]?.children[0]?.children[1];
+      var leftLeg = model?.children[0]?.children[0]?.children[0]?.children[1].children[0];
+      var rightUpLeg = model?.children[0]?.children[0]?.children[0]?.children[2];
+      var rightLeg = model?.children[0]?.children[0]?.children[0]?.children[2].children[0];
+
+      leftLeg.rotation.y = rotationX;
+      rotation_movement(rightLeg, rotationX,rotationX,rotationX)
     }
   }, [isReady, rotationX]);
+
+  // Part Rotation Movement
+  function rotation_movement(part, rx,ry,rz){
+    part.rotation.x = rx;
+    part.rotation.y = ry;
+    part.rotation.z = rz;
+  }
 
   // Check if Model is rendered
   useEffect(() => {
@@ -47,7 +70,7 @@ function App() {
         clearInterval(interval);
       }
       // Test Counter (Increase degree)
-      setRotationX(degree);
+      setRotationX(degreetoradian(degree));
       console.log(degree);
       degree++;
       // End
@@ -67,7 +90,7 @@ function App() {
   return (
     <div className="App">
       <a-scene>
-        <a-camera id="camera" position="0 0 0"></a-camera>
+        <a-camera id="camera" position="0 2 0"></a-camera>
         <a-entity
           id="mouseCursor"
           cursor="rayOrigin: mouse"
