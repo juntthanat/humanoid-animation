@@ -1,79 +1,52 @@
-import { useEffect } from "react";
-import "./three.js";
-import {createHandle} from "./object/handle"
+// import { useEffect } from "react";
+// import "./three.js";
+// import {createHandle} from "./object/handle"
 
-export default function three_animation() {
-  useEffect(() => {
-    let exit = false;
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
+// export default function three_animation() {
+//   useEffect(() => {
+//     let exit = false;
+//     const scene = new THREE.Scene();
+//     const camera = new THREE.PerspectiveCamera(
+//       75,
+//       window.innerWidth / window.innerHeight,
+//       0.1,
+//       1000
+//     );
 
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById("three_animation").replaceChildren(renderer.domElement);
+//     const renderer = new THREE.WebGLRenderer();
+//     renderer.setSize(window.innerWidth, window.innerHeight);
+//     document.getElementById("three_animation").replaceChildren(renderer.domElement);
 
-    var geometry = new THREE.BoxGeometry(2, 1, 2);
-    var material = new THREE.MeshStandardMaterial();
-    var base = new THREE.Mesh(geometry, material);
-    scene.add(base);
+//     var geometry = new THREE.BoxGeometry(2, 1, 2);
+//     var material = new THREE.MeshStandardMaterial();
+//     var base = new THREE.Mesh(geometry, material);
+//     scene.add(base);
 
-    camera.position.z = 5;
-    camera.position.x = 5;
-    camera.position.y = 5;
-    camera.lookAt(0,1.5,0);
-
-
-    var shoulder = new THREE.Object3D();
-    shoulder.translateY(0.5);
-    base.add(shoulder);
-
-    geometry = new THREE.BoxGeometry(0.5, 2, 0.5);
-    var lowerArm = new THREE.Mesh(geometry, material);
-    lowerArm.translateY(1);
-    shoulder.add(lowerArm);
-
-    // geometry = new THREE.SphereGeometry(0.6,20,20); // (radius, width segment, height segment)
-    // var handle = new THREE.Mesh(geometry, material);
-    // handle.translateY(1);
-
-    var handle = createHandle();
-
-    lowerArm.add(handle);
+//     camera.position.z = 5;
+//     camera.position.x = 5;
+//     camera.position.y = 5;
+//     camera.lookAt(0,1.5,0);
 
     
+//     function animate() {
+//       if (exit === true) return;
+//       requestAnimationFrame(animate);
 
-    var light = new THREE.DirectionalLight(0xffffff, 1.0);
-    light.position.set(10,5,10);
-    light.target = base;
-    scene.add(light);
+//       base.rotation.x += Number(xSpeed);
+//       base.rotation.y += Number(ySpeed);
+//       base.rotation.z += Number(zSpeed);
 
-    var alight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(alight);
+//       shoulder.rotation.x = Number(handleAngle);
 
-    function animate() {
-      if (exit === true) return;
-      requestAnimationFrame(animate);
+//       window.THREE.Cache.clear() // Prevent Context Lost
 
-      base.rotation.x += Number(xSpeed);
-      base.rotation.y += Number(ySpeed);
-      base.rotation.z += Number(zSpeed);
+//       renderer.render(scene, camera);
+//     }
+//     animate();
+//     return () => {
+//       exit = true;
+//     }
+//   }, []);
 
-      shoulder.rotation.x = Number(handleAngle);
-
-      window.THREE.Cache.clear() // Prevent Context Lost
-
-      renderer.render(scene, camera);
-    }
-    animate();
-    return () => {
-      exit = true;
-    }
-  }, []);
-
-  return <div id="three_animation"></div>;
-}
+//   return <div id="three_animation"></div>;
+// }
