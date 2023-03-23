@@ -8,14 +8,16 @@ function App() {
   const [isReady, setIsReady] = useState(false);
   const modelRef = useRef();
 
-  
+  // Run on Ipad
+  // npm run dev -- --host 0.0.0.0
 
   // Test Rotation
   useEffect(() => {
     if (isReady) {
+      // Use Blender to check the name and path
       const model = modelRef.current;
-      var bone = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[1]?.children[0];
-      bone.rotation.y = degreetoradian(rotationX);
+      var leftArm = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[1]?.children[0];
+      leftArm.rotation.y = degreetoradian(rotationX);
     }
   }, [isReady, rotationX]);
 
