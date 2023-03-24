@@ -28,12 +28,13 @@ function App() {
       var rightArm = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[2]?.children[0];
       var rightForeArm = model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]?.children[2]?.children[0]?.children[0];
       var leftUpLeg = model?.children[0]?.children[0]?.children[0]?.children[1];
-      var leftLeg = model?.children[0]?.children[0]?.children[0]?.children[1].children[0];
+      var leftLeg = model?.children[0]?.children[0]?.children[0]?.children[1]?.children[0];
       var rightUpLeg = model?.children[0]?.children[0]?.children[0]?.children[2];
-      var rightLeg = model?.children[0]?.children[0]?.children[0]?.children[2].children[0];
+      var rightLeg = model?.children[0]?.children[0]?.children[0]?.children[2]?.children[0];
 
       leftLeg.rotation.y = rotationX;
-      rotation_movement(rightLeg, rotationX,rotationX,rotationX)
+      rotation_movement(rightLeg, rotationX,rotationX,rotationX);
+      position_movement(model, rotationX/5 - 1, 0 , - rotationX/5 - 2);
     }
   }, [isReady, rotationX]);
 
@@ -42,6 +43,13 @@ function App() {
     part.rotation.x = rx;
     part.rotation.y = ry;
     part.rotation.z = rz;
+  }
+
+  // Part Position Movement
+  function position_movement(part, px, py,pz){
+    part.position.x = px;
+    part.position.y = py;
+    part.position.z = pz;
   }
 
   // Check if Model is rendered
@@ -71,7 +79,6 @@ function App() {
       }
       // Test Counter (Increase degree)
       setRotationX(degreetoradian(degree));
-      console.log(degree);
       degree++;
       // End
     }, 25);
@@ -106,12 +113,17 @@ function App() {
             id="mannequin"
           ></a-asset-item>
         </a-assets>
-        <a-gltf-model id="room" src="#room_704"></a-gltf-model>
+        <a-gltf-model 
+          id="room" 
+          src="#room_704"
+          position="-4 0 -2"
+          ></a-gltf-model>
         <a-gltf-model
           id="model"
           src="#mannequin"
-          position="3 0 0"
+          position="-1 0 -2"
         ></a-gltf-model>
+        <a-sky color="lightblue"></a-sky>
       </a-scene>
     </div>
   );
