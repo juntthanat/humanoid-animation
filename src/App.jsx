@@ -34,7 +34,7 @@ function App() {
 
       leftLeg.rotation.y = rotationX;
       rotation_movement(rightLeg, rotationX,rotationX,rotationX);
-      position_movement(model, rotationX/5 - 1, 0 , - rotationX/5 - 2);
+      // position_movement(model, rotationX/5 - 1, 0 , - rotationX/5 - 2);
     }
   }, [isReady, rotationX]);
 
@@ -97,7 +97,7 @@ function App() {
   return (
     <div className="App">
       <a-scene>
-        <a-camera id="camera" position="0 2 0"></a-camera>
+        <a-camera id="camera" position="-1 1 0"></a-camera>
         <a-entity
           id="mouseCursor"
           cursor="rayOrigin: mouse"
