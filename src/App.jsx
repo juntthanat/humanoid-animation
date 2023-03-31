@@ -75,23 +75,6 @@ function App() {
     part.position.z = pz;
   }
 
-  // Check if Model is rendered
-  useEffect(() => {
-    let interval;
-    interval = setInterval(() => {
-      var model = document.getElementById("model").object3D;
-      if (model) {
-        clearInterval(interval);
-        modelRef.current = model;
-        setIsReady(true);
-      }
-    }, 1000);
-
-    return () => {
-      setIsReady(false);
-      clearInterval(interval);
-    };
-  }, []);
 
   //Timer for 360 degree rotation
   useEffect(() => {
@@ -157,6 +140,24 @@ function App() {
       clearInterval(interval);
     };
   }, [testOutput]);
+
+  // Check if Model is rendered
+  useEffect(() => {
+    let interval;
+    interval = setInterval(() => {
+      var model = document.getElementById("model").object3D;
+      if (model) {
+        clearInterval(interval);
+        modelRef.current = model;
+        setIsReady(true);
+      }
+    }, 1000);
+
+    return () => {
+      setIsReady(false);
+      clearInterval(interval);
+    };
+  }, []);
 
   // Convert Degree to Radian
   function degreetoradian(degree) {
