@@ -76,6 +76,7 @@ function App() {
     // position_movement(model, 0, 0 , -testPosition);
 
     socket.on("data", (data) => {
+    // socket.onmessage = (data) => {
       // console.info(data);
 
       const math = () => Math.random() * 2;
