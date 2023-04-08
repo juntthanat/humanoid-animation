@@ -8,18 +8,13 @@ import { socket } from "./socket/socket";
 // Run on Ipad
 // npm run dev -- --host 0.0.0.0
 
+// Adding Physic Tutorial
+// AFRAME https://www.youtube.com/watch?v=SKYfYd3pk4I
+// THREEJS https://threejs.org/docs/#examples/en/animations/MMDPhysics
+
 function App() {
   const [isReady, setIsReady] = useState(false);
   const modelRef = useRef();
-
-  // Part State
-  // const [testRotation, setTestRotation] = useState(0);
-  // const [testPosition, setTestPosition] = useState(0);
-
-  // const [testRotationX, setTestRotationX] = useState(0);
-  // const [testRotationY, setTestRotationY] = useState(0);
-  // const [testRotationZ, setTestRotationZ] = useState(0);
-  // End
 
   // Check if Model is rendered
   useEffect(() => {
@@ -43,6 +38,7 @@ function App() {
     if (!isReady) return;
     // Use Blender to check the name and path
     const model = modelRef.current;
+    let bone;
     // Initialize Bone
     let head =
       model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
@@ -66,53 +62,26 @@ function App() {
     let rightUpLeg = model?.children[0]?.children[0]?.children[0]?.children[2];
     let rightLeg =
       model?.children[0]?.children[0]?.children[0]?.children[2]?.children[0];
-    let hips = model?.children[0]?.children[0]?.children[0];
 
-    // rotation_movement(rightLeg, testRotation, testRotation, testRotation);
-    // rotation_movement(leftArm, 0,0,0);
-    // rotation_movement(leftForeArm, testPosition,-45,90);
-    // rotation_movement(rightArm,45,0,0);
-    // rotation_movement(hips, 0, testRotation,0);
-    // position_movement(model, 0, 0 , -testPosition);
+    // socket.on("data", (data) => {
+    socket.onmessage = (data) => {
+      console.log(data.data);
 
-    socket.on("data", (data) => {
-    // socket.onmessage = (data) => {
-      // console.info(data);
+      const json = JSON.parse(data.data)
+      
 
-      const math = () => Math.random() * 2;
-      rotation_movement(
-        head,
-        data.rot_x + math(),
-        data.rot_y + math(),
-        data.rot_z + math()
-      );
-      rotation_movement(
-        leftArm,
-        data.rot_x + math(),
-        data.rot_y + math(),
-        data.rot_z + math()
-      );
-      rotation_movement(
-        leftForeArm,
-        data.rot_x + math(),
-        data.rot_y + math(),
-        data.rot_z + math()
-      );
-      rotation_movement(
-        rightUpLeg,
-        data.rot_x + math(),
-        data.rot_y + math(),
-        data.rot_z + math()
-      );
-      rotation_movement(
-        rightLeg,
-        data.rot_x + math(),
-        data.rot_y + math(),
-        data.rot_z + math()
-      );
-      console.log(math())
-      position_movement(model, math()/10,0, 0)
-    });
+      rotation_movement(head, json);
+      // rotation_movement(spine, .);
+      // rotation_movement(hips, .);
+      rotation_movement(leftArm, json);
+      rotation_movement(leftForeArm, json);
+      rotation_movement(rightArm, json);
+      rotation_movement(rightForeArm, json);
+      rotation_movement(leftLeg, json);
+      rotation_movement(leftUpLeg, json);
+      rotation_movement(rightLeg, json);
+      rotation_movement(rightUpLeg, json);
+    };
 
     return () => {
       socket.off("data");
@@ -120,10 +89,10 @@ function App() {
   }, [isReady]);
 
   // Part Rotation Movement
-  function rotation_movement(part, rx, ry, rz) {
-    part.rotation.x = rx;
-    part.rotation.y = ry;
-    part.rotation.z = rz;
+  function rotation_movement(part, data) {
+    part.rotation.x = data.rot_x;
+    part.rotation.y = data.rot_y;
+    part.rotation.z = data.rot_z;
   }
 
   // Part Position Movement
@@ -132,71 +101,6 @@ function App() {
     part.position.y = py;
     part.position.z = pz;
   }
-
-  //Timer for 360 degree rotation
-  useEffect(() => {
-    let degree = 0;
-    const interval = setInterval(() => {
-      if (degree === 360) {
-        clearInterval(interval);
-      }
-      // Test Counter (Increase degree)
-      setTestRotation(degreetoradian(degree));
-      degree++;
-      // End
-    }, 25);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  //Timer for move around and come back to the initial position
-  useEffect(() => {
-    let position = 0;
-    let initial = true;
-    const interval = setInterval(() => {
-      if (initial === true) {
-        if (position === 180) {
-          initial = false;
-        }
-        // Test Counter (Increase degree)
-        setTestPosition(degreetoradian(position) / 5);
-        position++;
-        // End
-      } else if (initial === false) {
-        if (position === 0) {
-          clearInterval(interval);
-        }
-        // Test Counter (Increase degree)
-        setTestPosition(degreetoradian(position) / 5);
-        position--;
-        // End
-      }
-    }, 25);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  // // Test JSON OUTPUT
-  // useEffect(() => {
-  //   let index = 0;
-  //   const interval = setInterval(() => {
-  //     setTestRotationX(testOutput[index].rot_x);
-  //     setTestRotationY(testOutput[index].rot_y);
-  //     setTestRotationZ(testOutput[index].rot_z);
-  //     index++;
-  //     if (index == obj.length()) {
-  //       clearInterval(interval);
-  //     }
-  //   }, 100);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, [testOutput]);
 
   // Convert Degree to Radian
   function degreetoradian(degree) {

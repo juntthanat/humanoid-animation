@@ -1,14 +1,14 @@
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
-const socket = io("localhost:3001");
+// const socket = io("localhost:3001");
 
-export { socket };
+// export { socket };
 
 
-// // Websocket
-// let socket = new WebSocket("localhost:3001");
+// Websocket
+let socket = new WebSocket("wss://testsocket.danceoftaihou.live");
 
-// export {socket};
+export {socket};
 
 
 
