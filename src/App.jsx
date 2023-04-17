@@ -39,7 +39,7 @@ function App() {
   useEffect(() => {
     if (!isReady) return;
     
-    const initialJson = '{ "source": "NODEMCU", "frequency": 1, "acc_x":-7.63, "acc_y":1.74, "acc_z":6.02, "rot_x":0.46, "rot_y":-0.90, "rot_z":-0.05 }'
+    const initialJson = '{ "source": "NODEMCU", "frequency": 1, "acc_x":0, "acc_y":0, "acc_z":0, "rot_x":0, "rot_y":0, "rot_z":0 }'
     let currentData = JSON.parse(initialJson);
     
     // Use Blender to check the name and path
@@ -74,19 +74,19 @@ function App() {
       setData(json)
       const newData = JSON.parse(data.data)
 
-      console.log(json);
+      // console.log(json);
 
       rotation_movement(head, newData, currentData);
-      // rotation_movement(spine, .);
-      // rotation_movement(hips, .);
+      // rotation_movement(spine, newData, currentData);
+      // rotation_movement(hips, newData, currentData);
       rotation_movement(leftArm, newData, currentData);
       rotation_movement(leftForeArm, newData, currentData);
       rotation_movement(rightArm, newData, currentData);
       rotation_movement(rightForeArm, newData, currentData);
-      rotation_movement(leftLeg, newData, currentData);
-      rotation_movement(leftUpLeg, newData, currentData);
-      rotation_movement(rightLeg, newData, currentData);
-      rotation_movement(rightUpLeg, newData, currentData);
+      // rotation_movement(leftLeg, newData, currentData);
+      // rotation_movement(leftUpLeg, newData, currentData);
+      // rotation_movement(rightLeg, newData, currentData);
+      // rotation_movement(rightUpLeg, newData, currentData);
 
       currentData = newData;
     };
