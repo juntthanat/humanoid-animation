@@ -88,6 +88,18 @@ function App() {
       // rotation_movement(rightLeg, newData, currentData);
       // rotation_movement(rightUpLeg, newData, currentData);
 
+      // rotation_movement(head, data);
+      // // rotation_movement(spine, data);
+      // // rotation_movement(hips, data);
+      // rotation_movement(leftArm, data);
+      // rotation_movement(leftForeArm, data);
+      // rotation_movement(rightArm, data);
+      // rotation_movement(rightForeArm, data);
+      // // rotation_movement(leftLeg, data);
+      // // rotation_movement(leftUpLeg, data);
+      // // rotation_movement(rightLeg, data);
+      // // rotation_movement(rightUpLeg, data);
+
       currentData = newData;
     };
 
@@ -118,6 +130,12 @@ function App() {
       clearInterval(interval);
     };
   }
+
+  // function rotation_movement(part, data){
+  //   part.rotation.x = data.rot_x
+  //   part.rotation.y = data.rot_y
+  //   part.rotation.z = data.rot_z
+  // }
 
   // Part Position Movement
   function position_movement(part, px, py, pz) {
