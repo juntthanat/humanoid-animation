@@ -76,29 +76,29 @@ function App() {
 
       // console.log(json);
 
-      rotation_movement(head, newData, currentData);
+      // rotation_movement(head, newData, currentData);
       // rotation_movement(spine, newData, currentData);
       // rotation_movement(hips, newData, currentData);
-      rotation_movement(leftArm, newData, currentData);
+      // rotation_movement(leftArm, newData, currentData);
       rotation_movement(leftForeArm, newData, currentData);
       rotation_movement(rightArm, newData, currentData);
-      rotation_movement(rightForeArm, newData, currentData);
+      // rotation_movement(rightForeArm, newData, currentData);
       // rotation_movement(leftLeg, newData, currentData);
       // rotation_movement(leftUpLeg, newData, currentData);
       // rotation_movement(rightLeg, newData, currentData);
       // rotation_movement(rightUpLeg, newData, currentData);
 
-      // rotation_movement(head, data);
-      // // rotation_movement(spine, data);
-      // // rotation_movement(hips, data);
-      // rotation_movement(leftArm, data);
-      // rotation_movement(leftForeArm, data);
-      // rotation_movement(rightArm, data);
-      // rotation_movement(rightForeArm, data);
-      // // rotation_movement(leftLeg, data);
-      // // rotation_movement(leftUpLeg, data);
-      // // rotation_movement(rightLeg, data);
-      // // rotation_movement(rightUpLeg, data);
+      // // rotation_movement(head, json);
+      // // rotation_movement(spine, json);
+      // // rotation_movement(hips, json);
+      // // rotation_movement(leftArm, json);
+      // rotation_movement(leftForeArm, json);
+      // rotation_movement(rightArm, json);
+      // // rotation_movement(rightForeArm, json);
+      // // rotation_movement(leftLeg, json);
+      // // rotation_movement(leftUpLeg, json);
+      // // rotation_movement(rightLeg, json);
+      // // rotation_movement(rightUpLeg, json);
 
       currentData = newData;
     };
@@ -112,9 +112,22 @@ function App() {
   function rotation_movement(part, newData, currentData) {
     let interval;
     let index = 0;
-    let partialDataX = (newData.rot_x - currentData.rot_x)/10;
-    let partialDataY = (newData.rot_y - currentData.rot_y)/10;
-    let partialDataZ = (newData.rot_z - currentData.rot_z)/10;
+    let differentX = newData.rot_x - currentData.rot_x;
+    let differentY = newData.rot_y - currentData.rot_y;
+    let differentZ = newData.rot_z - currentData.rot_z;
+    let partialDataX = 0;
+    let partialDataY = 0;
+    let partialDataZ = 0;
+    if(differentX != 0){
+      partialDataX = differentX/10;
+    }
+    if(differentY != 0){
+      partialDataY= differentY/10;
+    }
+    if(differentZ != 0){
+      partialDataZ = differentZ/10;
+    }
+
   
     interval = setInterval(() => {
       part.rotation.x = currentData.rot_x + partialDataX*index;
@@ -124,7 +137,7 @@ function App() {
         clearInterval(interval);
       }
       index++;
-    }, 25);
+    }, 20);
 
     return () => {
       clearInterval(interval);
@@ -132,9 +145,9 @@ function App() {
   }
 
   // function rotation_movement(part, data){
-  //   part.rotation.x = data.rot_x
-  //   part.rotation.y = data.rot_y
-  //   part.rotation.z = data.rot_z
+  //   part.rotation.x = data.rot_x;
+  //   part.rotation.y = data.rot_y;
+  //   part.rotation.z = data.rot_z;
   // }
 
   // Part Position Movement
