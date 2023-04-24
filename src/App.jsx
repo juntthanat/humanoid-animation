@@ -109,31 +109,61 @@ function App() {
   }, [isReady]);
 
   // Part Rotation Movement
-  function rotation_movement(part, newData, currentData) {
-    let interval;
-    let index = 0;
-    let differentX = newData.rot_x - currentData.rot_x;
-    let differentY = newData.rot_y - currentData.rot_y;
-    let differentZ = newData.rot_z - currentData.rot_z;
-    let partialDataX = 0;
-    let partialDataY = 0;
-    let partialDataZ = 0;
-    if(differentX != 0){
-      partialDataX = differentX/10;
-    }
-    if(differentY != 0){
-      partialDataY= differentY/10;
-    }
-    if(differentZ != 0){
-      partialDataZ = differentZ/10;
-    }
+  // function rotation_movement(part, newData, currentData) {
+  //   let interval;
+  //   let index = 0;
+  //   let differentX = newData.rot_x - currentData.rot_x;
+  //   let differentY = newData.rot_y - currentData.rot_y;
+  //   let differentZ = newData.rot_z - currentData.rot_z;
+  //   let partialDataX = 0;
+  //   let partialDataY = 0;
+  //   let partialDataZ = 0;
+  //   if(differentX != 0){
+  //     partialDataX = differentX/10;
+  //   }
+  //   if(differentY != 0){
+  //     partialDataY= differentY/10;
+  //   }
+  //   if(differentZ != 0){
+  //     partialDataZ = differentZ/10;
+  //   }
 
   
+  //   interval = setInterval(() => {
+  //     part.rotation.x = currentData.rot_x + partialDataX*index;
+  //     part.rotation.y = currentData.rot_y + partialDataY*index;
+  //     part.rotation.z = currentData.rot_z + partialDataZ*index;
+  //     if (index == 10) {
+  //       clearInterval(interval);
+  //     }
+  //     index++;
+  //   }, 20);
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }
+
+  function rotation_movement(part, data){
+  let changeX = 0;
+  let changeY = 0;
+  let changeZ = 0;
+  let interval;
+  let index = 0;
+  if (data.rot_x != 0){
+    changeX = data.rot_x/5;
+  }
+  if (data.rot_y != 0){
+    changeY = data.rot_y/5;
+  }
+  if (data.rot_z != 0){
+    changeZ = data.rot_z/5;
+  }
     interval = setInterval(() => {
-      part.rotation.x = currentData.rot_x + partialDataX*index;
-      part.rotation.y = currentData.rot_y + partialDataY*index;
-      part.rotation.z = currentData.rot_z + partialDataZ*index;
-      if (index == 10) {
+    part.rotation.x += changeX;
+    part.rotation.y += changeY;
+    part.rotation.z += changeZ;
+    if (index == 5) {
         clearInterval(interval);
       }
       index++;
@@ -143,12 +173,6 @@ function App() {
       clearInterval(interval);
     };
   }
-
-  // function rotation_movement(part, data){
-  //   part.rotation.x = data.rot_x;
-  //   part.rotation.y = data.rot_y;
-  //   part.rotation.z = data.rot_z;
-  // }
 
   // Part Position Movement
   function position_movement(part, px, py, pz) {
