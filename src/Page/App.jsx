@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import "aframe";
 import "../three/three.js";
-import { socket } from "../socket/socket";
+// import { socket } from "../socket/socket";
+import { startWebSocket, closeWebsocket } from "../socket/socket";
 // import testOutput from "./assets/testOutput.json";
 
 // Run on Ipad
@@ -15,7 +16,21 @@ import { socket } from "../socket/socket";
 function App() {
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState({});
-  const modelRef = useRef();
+  const [index, setIndex] = useState(0);
+  let modelRef = useRef();
+
+  const socketRef = useRef();
+
+  const [head, setHead] = useState();
+  const [spine, setSpine] = useState();
+  const [leftArm, setLeftArm] = useState();
+  const [leftForeArm, setLeftForeArm] = useState();
+  const [rightArm, setRightArm] = useState();
+  const [rightForeArm, setRightForeArm] = useState();
+  const [leftLeg, setLeftLeg] = useState();
+  const [leftUpLeg, setLeftUpLeg] = useState();
+  const [rightLeg, setRightLeg] = useState();
+  const [rightUpLeg, setRightUpLeg] = useState();
 
   // Check if Model is rendered
   useEffect(() => {
@@ -24,7 +39,39 @@ function App() {
       let model = document.getElementById("model").object3D;
       if (model) {
         clearInterval(interval);
+        setHead(
+          model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
+            ?.children[0]?.children[0]?.children[0]
+        );
+        setSpine(model?.children[0]?.children[0]?.children[0]?.children[0]);
+        setLeftArm(
+          model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
+            ?.children[0]?.children[1]?.children[0]
+        );
+        setLeftForeArm(
+          model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
+            ?.children[0]?.children[1]?.children[0]?.children[0]
+        );
+        setRightArm(
+          model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
+            ?.children[0]?.children[2]?.children[0]
+        );
+        setRightForeArm(
+          model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
+            ?.children[0]?.children[2]?.children[0]?.children[0]
+        );
+        setLeftUpLeg(model?.children[0]?.children[0]?.children[0]?.children[1]);
+        setLeftLeg(
+          model?.children[0]?.children[0]?.children[0]?.children[1]?.children[0]
+        );
+        setRightUpLeg(
+          model?.children[0]?.children[0]?.children[0]?.children[2]
+        );
+        setRightLeg(
+          model?.children[0]?.children[0]?.children[0]?.children[2]?.children[0]
+        );
         modelRef.current = model;
+        console.log("init");
         setIsReady(true);
       }
     }, 1000);
@@ -38,111 +85,78 @@ function App() {
   useEffect(() => {
     if (!isReady) return;
 
-    const initialJson =
-      '{ "source": "NODEMCU", "frequency": 1, "acc_x":0, "acc_y":0, "acc_z":0, "rot_x":0, "rot_y":0, "rot_z":0 }';
-    let currentData = JSON.parse(initialJson);
+    // const initialJson =
+    //   '{ "source": "NODEMCU", "frequency": 1, "acc_x":0, "acc_y":0, "acc_z":0, "rot_x":0, "rot_y":0, "rot_z":0 }';
+    // let currentData = JSON.parse(initialJson);
 
     // Use Blender to check the name and path
-    const model = modelRef.current;
-    let bone;
     // Initialize Bone
-    let head =
-      model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
-        ?.children[0]?.children[0]?.children[0];
-    let spine = model?.children[0]?.children[0]?.children[0]?.children[0];
-    let leftArm =
-      model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
-        ?.children[0]?.children[1]?.children[0];
-    let leftForeArm =
-      model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
-        ?.children[0]?.children[1]?.children[0]?.children[0];
-    let rightArm =
-      model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
-        ?.children[0]?.children[2]?.children[0];
-    let rightForeArm =
-      model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
-        ?.children[0]?.children[2]?.children[0]?.children[0];
-    let leftUpLeg = model?.children[0]?.children[0]?.children[0]?.children[1];
-    let leftLeg =
-      model?.children[0]?.children[0]?.children[0]?.children[1]?.children[0];
-    let rightUpLeg = model?.children[0]?.children[0]?.children[0]?.children[2];
-    let rightLeg =
-      model?.children[0]?.children[0]?.children[0]?.children[2]?.children[0];
+    setHead(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[0]
+        ?.children[0]?.children[0]?.children[0]?.children[0]
+    );
+    setSpine(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[0]
+    );
+    setLeftArm(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[0]
+        ?.children[0]?.children[0]?.children[1]?.children[0]
+    );
+    setLeftForeArm(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[0]
+        ?.children[0]?.children[0]?.children[1]?.children[0]?.children[0]
+    );
+    setRightArm(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[0]
+        ?.children[0]?.children[0]?.children[2]?.children[0]
+    );
+    setRightForeArm(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[0]
+        ?.children[0]?.children[0]?.children[2]?.children[0]?.children[0]
+    );
+    setLeftUpLeg(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[1]
+    );
+    setLeftLeg(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[1]
+        ?.children[0]
+    );
+    setRightUpLeg(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[2]
+    );
+    setRightLeg(
+      modelRef.current?.children[0]?.children[0]?.children[0]?.children[2]
+        ?.children[0]
+    );
 
-    socket.onmessage = (data) => {
+    socketRef.current = startWebSocket();
+    // socket.current = new WebSocket("wss://testsocket.danceoftaihou.live");
+
+    socketRef.current.onmessage = (data) => {
       const json = JSON.parse(data.data);
-      setData(json);
-      const newData = JSON.parse(data.data);
-
       // console.log(json);
-
-      // rotation_movement(head, newData, currentData);
-      // rotation_movement(spine, newData, currentData);
-      // rotation_movement(hips, newData, currentData);
-      // rotation_movement(leftArm, newData, currentData);
-      rotation_movement(leftForeArm, newData, currentData);
-      rotation_movement(rightArm, newData, currentData);
-      // rotation_movement(rightForeArm, newData, currentData);
-      // rotation_movement(leftLeg, newData, currentData);
-      // rotation_movement(leftUpLeg, newData, currentData);
-      // rotation_movement(rightLeg, newData, currentData);
-      // rotation_movement(rightUpLeg, newData, currentData);
+      setData(json);
+      // console.log(leftForeArm)
 
       // // rotation_movement(head, json);
       // // rotation_movement(spine, json);
       // // rotation_movement(hips, json);
       // // rotation_movement(leftArm, json);
-      // rotation_movement(leftForeArm, json);
+      rotation_movement(leftForeArm, json);
       // rotation_movement(rightArm, json);
       // // rotation_movement(rightForeArm, json);
       // // rotation_movement(leftLeg, json);
       // // rotation_movement(leftUpLeg, json);
       // // rotation_movement(rightLeg, json);
       // // rotation_movement(rightUpLeg, json);
-
-      currentData = newData;
     };
 
     return () => {
-      socket.close();
+      closeWebsocket(socketRef.current);
     };
   }, [isReady]);
 
   // Part Rotation Movement
-  // function rotation_movement(part, newData, currentData) {
-  //   let interval;
-  //   let index = 0;
-  //   let differentX = newData.rot_x - currentData.rot_x;
-  //   let differentY = newData.rot_y - currentData.rot_y;
-  //   let differentZ = newData.rot_z - currentData.rot_z;
-  //   let partialDataX = 0;
-  //   let partialDataY = 0;
-  //   let partialDataZ = 0;
-  //   if(differentX != 0){
-  //     partialDataX = differentX/10;
-  //   }
-  //   if(differentY != 0){
-  //     partialDataY= differentY/10;
-  //   }
-  //   if(differentZ != 0){
-  //     partialDataZ = differentZ/10;
-  //   }
-
-  //   interval = setInterval(() => {
-  //     part.rotation.x = currentData.rot_x + partialDataX*index;
-  //     part.rotation.y = currentData.rot_y + partialDataY*index;
-  //     part.rotation.z = currentData.rot_z + partialDataZ*index;
-  //     if (index == 10) {
-  //       clearInterval(interval);
-  //     }
-  //     index++;
-  //   }, 20);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }
-
   function rotation_movement(part, data) {
     let changeX = 0;
     let changeY = 0;
@@ -186,6 +200,21 @@ function App() {
     return radian;
   }
 
+  const modelList = ["female", "male"];
+
+  async function changeAvatar() {
+    setIsReady(false);
+    setIndex((index + 1) % modelList.length);
+    model.removeAttribute("gltf-model");
+    model.setAttribute("gltf-model", `#${modelList[index]}`);
+    let newModel = document.getElementById("model").object3D;
+    modelRef.current = newModel;
+    await delay(1000);
+    setIsReady(true);
+  }
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   return (
     <div className="App">
       <div>
@@ -203,7 +232,11 @@ function App() {
             ></a-asset-item>
             <a-asset-item
               src="src\assets\mannequin_female.gltf"
-              id="mannequin"
+              id="female"
+            ></a-asset-item>
+            <a-asset-item
+              src="src\assets\mannequin_male.glb"
+              id="male"
             ></a-asset-item>
           </a-assets>
           <a-gltf-model
@@ -215,7 +248,7 @@ function App() {
           ></a-gltf-model>
           <a-gltf-model
             id="model"
-            src="#mannequin"
+            src="#female"
             position="0 0 0"
           ></a-gltf-model>
           <a-sky color="lightblue"></a-sky>
@@ -225,6 +258,7 @@ function App() {
         <div className="indicator">X = {data.rot_x}</div>
         <div className="indicator">Y = {data.rot_y}</div>
         <div className="indicator">Z = {data.rot_z}</div>
+        <button onClick={changeAvatar}>click me</button>
       </div>
     </div>
   );
