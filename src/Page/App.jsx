@@ -142,6 +142,7 @@ function App() {
       setData(json);
 
       rotation_movement(rightArm, json)
+      // rotation_movement(body, json)
 
       // Rotationing
       console.log(json.source);
@@ -251,7 +252,7 @@ function App() {
   //   setIsReady(true);
   // }
 
-  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   return (
     <div className="App">
@@ -293,9 +294,18 @@ function App() {
         </a-scene>
       </div>
       <div id="overlay">
-        <div className="indicator">X = {data.rot_x}</div>
-        <div className="indicator">Y = {data.rot_y}</div>
-        <div className="indicator">Z = {data.rot_z}</div>
+        Rotation 
+        <div className="indicator-container">
+          <div className="indicator">X = {data.rot_x}</div>
+          <div className="indicator">Y = {data.rot_y}</div>
+          <div className="indicator">Z = {data.rot_z}</div>
+        </div>
+        Position
+        <div className="indicator-container">
+          <div className="indicator">X = {data.rot_x}</div>
+          <div className="indicator">Y = {data.rot_y}</div>
+          <div className="indicator">Z = {data.rot_z}</div>
+        </div>
         {/* <button onClick={changeAvatar}>click me</button> */}
       </div>
     </div>

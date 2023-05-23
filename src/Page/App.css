@@ -4,8 +4,8 @@
 }
 #overlay{
   position: fixed;
-  height: 4%;
-  width: 36%;
+  height: 16%;
+  width: 18%;
 
   bottom: 0;
   right: 0;
@@ -13,12 +13,22 @@
   
   background-color: lightgrey;
   border-radius:  5px;
+  border: black 1px solid;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.indicator-container{
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 .indicator{
-  padding: 8%;
+  width: 32%;
+  padding-left: 4%;
 }
