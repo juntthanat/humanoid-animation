@@ -15,16 +15,13 @@ import { startWebSocket, closeWebsocket } from "../socket/socket";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
-  const [rotationData, setRotationData] = useState({});
-  const [positionData, setPositionData] = useState({});
+  const [data, setData] = useState({});
   const [index, setIndex] = useState(0);
   let modelRef = useRef();
 
-  const socketRotationRef = useRef();
-  const socketPositionRef = useRef();
+  const socketRef = useRef();
 
   const [head, setHead] = useState();
-  const [spine, setSpine] = useState();
   const [leftArm, setLeftArm] = useState();
   const [leftForeArm, setLeftForeArm] = useState();
   const [rightArm, setRightArm] = useState();
@@ -49,7 +46,6 @@ function App() {
           model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
             ?.children[0]?.children[0]?.children[0]
         );
-        setSpine(model?.children[0]?.children[0]?.children[0]?.children[0]);
         setLeftArm(
           model?.children[0]?.children[0]?.children[0]?.children[0]?.children[0]
             ?.children[0]?.children[1]?.children[0]
@@ -136,108 +132,127 @@ function App() {
     //     ?.children[0]
     // );
 
-    socketRotationRef.current = startRotationWebSocket();
-    socketPositionRef.current = startPositionWebSocket();
+    socketRef.current = startWebSocket();
     // socket.current = new WebSocket("wss://testsocket.danceoftaihou.live");
 
-    socketRotationRef.current.onmessage = (data) => {
-      const rotationJson = JSON.parse(data.data);
-      setRotationData(rotationJson);
+    socketRef.current.onmessage = (data) => {
+      const json = JSON.parse(data.data);
+      setData(json);
 
-      rotation_movement(rightArm, rotationJson)
-      // rotation_movement(body, rotationJson)
+      // rotation_movement(rightArm, json)
+      // rotation_movement(body, json)
 
       // Rotationing
-      console.log(rotationJson.source);
-      switch (rotationJson.source) {
-        case "head":
-          rotation_movement(head, rotationJson)
+      // console.log(json.source);
+      switch (json.source) {
+        case "HEAD":
+          rotation_movement(head, json)
           break;
-        case "spine":
+        case "BODY":
           break;
-        case "rightArm":
-          rotation_movement(rightArm, rotationJson)
-          rotation_movement(rightForeArm, rotationJson)
+        case "ARM-R":
+          rotation_movement(rightArm, json)
+          reverse_rotation(rightForeArm, json)
           break;
-        case "rightForeArm":
-          rotation_movement(rightForeArm,rotationJson)
+        case "FOREARM-R":
+          rotation_movement(rightForeArm,json)
           break;
-        case "leftArm":
-          rotation_movement(leftArm, rotationJson)
-          rotation_movement(leftForeArm, rotationJson)
+        case "ARM-L":
+          rotation_movement(leftArm, json)
+          reverse_rotation(leftForeArm, json)
+          // console.log(leftArm.rotation.x)
           break;
-        case "leftForeArm":
-          rotation_movement(leftForeArm, rotationJson)
+        case "FOREARM-L":
+          rotation_movement(leftForeArm, json)
+          // console.log(leftForeArm.rotation.x)
           break;
-        case "rightUpLeg":
-          rotation_movement(rightUpLeg, rotationJson)
-          rotation_movement(rightLeg, rotationJson)
+        case "THICC-R":
+          reverse_rotation(rightUpLeg, json)
+          rotation_movement(rightLeg, json)
           break;
-        case "rightLeg":
-          rotation_movement(rightLeg, rotationJson)
+        case "LEG-R":
+          rotation_movement(rightLeg, json)
           break;
-        case "leftUpLeg":
-          rotation_movement(leftUpLeg,rotationJson)
-          rotation_movement(leftLeg,rotationJson)
+        case "THICC-L":
+          reverse_rotation(leftUpLeg,json)
+          rotation_movement(leftLeg,json)
           break;
-        case "leftLeg":
-          rotation_movement(leftLeg,rotationJson)
+        case "LEG-L":
+          rotation_movement(leftLeg,json)
           break;
-      }
+        case "2000": //Positioning
+          position_movement(body, json)
+          break;
+      }      
     };
 
-    socketPositionRef.current.onmessage = (data) => {
-      const json = JSON.parse(data.data);
-      setRotationData(json);
-      // Positioning
-      position_movement(body, json)
-    }
-
     return () => {
-      closeWebsocket(socketRotationRef.current);
-      closeWebsocket(socketPositionRef.current);
+      closeWebsocket(socketRef.current);
     };
   }, [isReady]);
 
   // Part Rotation Movement
   function rotation_movement(part, data) {
-    let changeX = 0;
-    let changeY = 0;
-    let changeZ = 0;
-    let interval;
-    let index = 0;
-    if (data.rot_x != 0) {
-      changeX = data.rot_x / 5;
-    }
-    if (data.rot_y != 0) {
-      changeY = data.rot_y / 5;
-    }
-    if (data.rot_z != 0) {
-      changeZ = data.rot_z / 5;
-    }
-    interval = setInterval(() => {
-      part.rotation.x += changeX;
-      part.rotation.y += changeY;
-      part.rotation.z += changeZ;
-      if (index == 5) {
-        clearInterval(interval);
-      }
-      index++;
-    }, 20);
+    // let changeX = 0;
+    // let changeY = 0;
+    // let changeZ = 0;
+    // let interval;
+    // let index = 0;
+    // if (data.rot_x != 0) {
+    //   changeX = data.rot_x / 5;
+    // }
+    // if (data.rot_y != 0) {
+    //   changeY = data.rot_y / 5;
+    // }
+    // if (data.rot_z != 0) {
+    //   changeZ = data.rot_z / 5;
+    // }
+    // interval = setInterval(() => {
+      // part.rotation.x += changeX;
+      // part.rotation.y += changeY;
+      // part.rotation.z += changeZ;
 
-    return () => {
-      clearInterval(interval);
-    };
+    //   if (index == 5) {
+    //     clearInterval(interval);
+    //   }
+    //   index++;
+    // }, 20);
+
+    // return () => {
+    //   clearInterval(interval);
+  // };
+    if(data.rot_x > 0.1 || data.rot_x < -0.1){
+      part.rotation.x += data.rot_x/data.frequency;
+    }
+    if(data.rot_y > 0.1 || data.rot_y < -0.1){
+      part.rotation.y += data.rot_y/data.frequency;
+    }
+    if(data.rot_z > 0.1 || data.rot_z < -0.1){
+      part.rotation.z += data.rot_z/data.frequency;
+    }
+    console.log(data.rot_x)
+    console.log(data.rot_y)
+    console.log(data.rot_z)
+  }
+
+  function reverse_rotation(part, data){
+    if(data.rot_x > 0.1 || data.rot_x < -0.1){
+      part.rotation.x -= data.rot_x/data.frequency;
+    }
+    if(data.rot_y > 0.1 || data.rot_y < -0.1){
+      part.rotation.y -= data.rot_y/data.frequency;
+    }
+    if(data.rot_z > 0.1 || data.rot_z < -0.1){
+      part.rotation.z -= data.rot_z/data.frequency;
+    }
   }
 
   // Part Position Movement
   function position_movement(part, data) {
-    // part.position.x = data.x;
-    // part.position.y = data.y;
-    // part.position.z = data.z;
-    part.position.x = data.rot_x;
+    // X = 9m, Z = 10.5m
+    part.position.x = data.x;
     // part.position.y = data.rot_y;
-    part.position.z = data.rot_z;
+    part.position.z = -data.y;
   }
 
   // Convert Degree to Radian
@@ -289,7 +304,7 @@ function App() {
           <a-gltf-model
             id="room"
             src="#room_704"
-            position="-3 0 0"
+            position="0 0 0"
             // For Ipad to look at the model
             // camera="look-controls"
           ></a-gltf-model>
@@ -297,6 +312,7 @@ function App() {
             id="model"
             src="#female"
             position="0 0 0"
+            // x = 9, z = 10
           ></a-gltf-model>
           <a-sky color="lightblue"></a-sky>
         </a-scene>
@@ -304,18 +320,15 @@ function App() {
       <div id="overlay">
         Rotation 
         <div className="indicator-container">
-          <div className="indicator">X = {rotationData.rot_x}</div>
-          <div className="indicator">Y = {rotationData.rot_y}</div>
-          <div className="indicator">Z = {rotationData.rot_z}</div>
+          <div className="indicator">X = {data.rot_x}</div>
+          <div className="indicator">Y = {data.rot_y}</div>
+          <div className="indicator">Z = {data.rot_z}</div>
         </div>
         Position
         <div className="indicator-container">
-          {/* <div className="indicator">X = {positionData.rot_x}</div>
-          <div className="indicator">Y = {positionData.rot_y}</div>
-          <div className="indicator">Z = {positionData.rot_z}</div> */}
-          <div className="indicator">X = {rotationData.rot_x}</div>
-          <div className="indicator">Y = {rotationData.rot_y}</div>
-          <div className="indicator">Z = {rotationData.rot_z}</div>
+          <div className="indicator">X = {data.x}</div>
+          <div className="indicator">Y = {data.y}</div>
+          {/* <div className="indicator">Z = {data.rot_z}</div> */}
         </div>
         {/* <button onClick={changeAvatar}>click me</button> */}
       </div>
