@@ -8,7 +8,12 @@
 // let socket = new WebSocket("wss://testsocket.danceoftaihou.live");
 // let socket = new WebSocket("ws://localhost:8989")
 
-export function startWebSocket() {
+export function startRotationWebSocket() {
+  let socket = new WebSocket("wss://testsocket.danceoftaihou.live");
+  return socket;
+}
+
+export function startPositionWebSocket() {
   let socket = new WebSocket("wss://testsocket.danceoftaihou.live");
   return socket;
 }

@@ -15,11 +15,13 @@ import { startWebSocket, closeWebsocket } from "../socket/socket";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
-  const [data, setData] = useState({});
+  const [rotationData, setRotationData] = useState({});
+  const [positionData, setPositionData] = useState({});
   const [index, setIndex] = useState(0);
   let modelRef = useRef();
 
-  const socketRef = useRef();
+  const socketRotationRef = useRef();
+  const socketPositionRef = useRef();
 
   const [head, setHead] = useState();
   const [spine, setSpine] = useState();
@@ -134,60 +136,66 @@ function App() {
     //     ?.children[0]
     // );
 
-    socketRef.current = startWebSocket();
+    socketRotationRef.current = startRotationWebSocket();
+    socketPositionRef.current = startPositionWebSocket();
     // socket.current = new WebSocket("wss://testsocket.danceoftaihou.live");
 
-    socketRef.current.onmessage = (data) => {
-      const json = JSON.parse(data.data);
-      setData(json);
+    socketRotationRef.current.onmessage = (data) => {
+      const rotationJson = JSON.parse(data.data);
+      setRotationData(rotationJson);
 
-      rotation_movement(rightArm, json)
-      // rotation_movement(body, json)
+      rotation_movement(rightArm, rotationJson)
+      // rotation_movement(body, rotationJson)
 
       // Rotationing
-      console.log(json.source);
-      switch (json.source) {
+      console.log(rotationJson.source);
+      switch (rotationJson.source) {
         case "head":
-          rotation_movement(head, json)
+          rotation_movement(head, rotationJson)
           break;
         case "spine":
           break;
         case "rightArm":
-          rotation_movement(rightArm, json)
-          rotation_movement(rightForeArm, json)
+          rotation_movement(rightArm, rotationJson)
+          rotation_movement(rightForeArm, rotationJson)
           break;
         case "rightForeArm":
-          rotation_movement(rightForeArm,json)
+          rotation_movement(rightForeArm,rotationJson)
           break;
         case "leftArm":
-          rotation_movement(leftArm, json)
-          rotation_movement(leftForeArm, json)
+          rotation_movement(leftArm, rotationJson)
+          rotation_movement(leftForeArm, rotationJson)
           break;
         case "leftForeArm":
-          rotation_movement(leftForeArm, json)
+          rotation_movement(leftForeArm, rotationJson)
           break;
         case "rightUpLeg":
-          rotation_movement(rightUpLeg, json)
-          rotation_movement(rightLeg, json)
+          rotation_movement(rightUpLeg, rotationJson)
+          rotation_movement(rightLeg, rotationJson)
           break;
         case "rightLeg":
-          rotation_movement(rightLeg, json)
+          rotation_movement(rightLeg, rotationJson)
           break;
         case "leftUpLeg":
-          rotation_movement(leftUpLeg,json)
-          rotation_movement(leftLeg,json)
+          rotation_movement(leftUpLeg,rotationJson)
+          rotation_movement(leftLeg,rotationJson)
           break;
         case "leftLeg":
-          rotation_movement(leftLeg,json)
+          rotation_movement(leftLeg,rotationJson)
           break;
       }
-
-      // Positioning
-      position_movement(body, json)
     };
 
+    socketPositionRef.current.onmessage = (data) => {
+      const json = JSON.parse(data.data);
+      setRotationData(json);
+      // Positioning
+      position_movement(body, json)
+    }
+
     return () => {
-      closeWebsocket(socketRef.current);
+      closeWebsocket(socketRotationRef.current);
+      closeWebsocket(socketPositionRef.current);
     };
   }, [isReady]);
 
@@ -296,15 +304,18 @@ function App() {
       <div id="overlay">
         Rotation 
         <div className="indicator-container">
-          <div className="indicator">X = {data.rot_x}</div>
-          <div className="indicator">Y = {data.rot_y}</div>
-          <div className="indicator">Z = {data.rot_z}</div>
+          <div className="indicator">X = {rotationData.rot_x}</div>
+          <div className="indicator">Y = {rotationData.rot_y}</div>
+          <div className="indicator">Z = {rotationData.rot_z}</div>
         </div>
         Position
         <div className="indicator-container">
-          <div className="indicator">X = {data.rot_x}</div>
-          <div className="indicator">Y = {data.rot_y}</div>
-          <div className="indicator">Z = {data.rot_z}</div>
+          {/* <div className="indicator">X = {positionData.rot_x}</div>
+          <div className="indicator">Y = {positionData.rot_y}</div>
+          <div className="indicator">Z = {positionData.rot_z}</div> */}
+          <div className="indicator">X = {rotationData.rot_x}</div>
+          <div className="indicator">Y = {rotationData.rot_y}</div>
+          <div className="indicator">Z = {rotationData.rot_z}</div>
         </div>
         {/* <button onClick={changeAvatar}>click me</button> */}
       </div>
