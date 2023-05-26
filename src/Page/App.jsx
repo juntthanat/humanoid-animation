@@ -11,8 +11,7 @@ import { startWebSocket, closeWebsocket } from "../socket/socket";
 function App() {
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState({});
-  const [index, setIndex] = useState(0);
-  let modelRef = useRef();
+  // let modelRef = useRef();
 
   const socketRef = useRef();
 
@@ -66,8 +65,7 @@ function App() {
           model?.children[0]?.children[0]?.children[0]?.children[2]?.children[0]
         );
         setBody(model?.children[0]?.children[0]?.children[0]);
-        modelRef.current = model;
-        console.log("init");
+        // modelRef.current = model;
         setIsReady(true);
       }
     }, 1000);
@@ -82,17 +80,28 @@ function App() {
     if (!isReady) return;
 
     socketRef.current = startWebSocket();
+
     socketRef.current.onmessage = (data) => {
       const json = JSON.parse(data.data);
       setData(json);
+
+      console.log(json)
 
       switch (json.source) {
         case "HEAD":
           rotation_movement(head, json)
           break;
-        case "BODY":
-          body_movement(body,json)
-          break;
+        // case "BODY":
+        //   body_movement(body,json)
+        //   body_reverse_movement_arm(rightArm,json)
+        //   body_reverse_movement_arm(rightForeArm,json)
+        //   body_reverse_movement_arm(leftArm,json)
+        //   body_reverse_movement_arm(leftForeArm,json)
+        //   body_reverse_movement_upleg(rightUpLeg, json)
+        //   body_reverse_movement_leg(rightLeg, json)
+        //   body_reverse_movement_upleg(leftUpLeg, json)
+        //   body_reverse_movement_leg(leftLeg, json)
+        //   break;
         case "ARM-R":
           rotation_movement(rightArm, json)
           reverse_rotation(rightForeArm, json)
@@ -158,8 +167,19 @@ function App() {
   }
   
   function body_movement(part, data){
-    part.rotation.y += data.rot_y/data.frequency;
+      part.rotation.y += data.rot_y/data.frequency;
   }
+
+  function body_reverse_movement_arm(part, data){
+      part.rotation.z += data.rot_z/data.frequency;
+  }
+
+  function body_reverse_movement_upleg(part, data){
+      part.rotation.y -= data.rot_y/data.frequency;
+  }
+  function body_reverse_movement_leg(part, data){
+    part.rotation.y += data.rot_y/data.frequency;
+}
 
   // Part Position Movement
   function position_movement(part, data) {
