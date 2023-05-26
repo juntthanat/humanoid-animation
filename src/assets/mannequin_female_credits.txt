@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mannequin Female
+* source:	https://sketchfab.com/3d-models/mannequin-female-5e9898a1ac2048d89fbcdfdb55f8c6b0
+* author:	SketchPunk (https://sketchfab.com/sketchpunk)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mannequin Female" (https://sketchfab.com/3d-models/mannequin-female-5e9898a1ac2048d89fbcdfdb55f8c6b0) by SketchPunk (https://sketchfab.com/sketchpunk) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

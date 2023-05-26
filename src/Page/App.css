@@ -1,0 +1,34 @@
+.App{
+  height: 100vh;
+  width: 100vw;
+}
+#overlay{
+  position: fixed;
+  height: 16%;
+  width: 18%;
+
+  bottom: 0;
+  right: 0;
+  margin: 10px;
+  
+  background-color: lightgrey;
+  border-radius:  5px;
+  border: black 1px solid;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.indicator-container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.indicator{
+  width: 32%;
+  padding-left: 4%;
+}
