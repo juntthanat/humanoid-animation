@@ -3,7 +3,6 @@ import "./App.css";
 import "aframe";
 import "../three/three.js";
 import { startWebSocket, closeWebsocket } from "../socket/socket";
-// import testOutput from "./assets/testOutput.json";
 
 // Run on Ipad
 // npm run dev -- --host 0.0.0.0
@@ -11,7 +10,6 @@ import { startWebSocket, closeWebsocket } from "../socket/socket";
 function App() {
   const [isReady, setIsReady] = useState(false);
   const [data, setData] = useState({});
-  // let modelRef = useRef();
 
   const socketRef = useRef();
 
@@ -65,7 +63,6 @@ function App() {
           model?.children[0]?.children[0]?.children[0]?.children[2]?.children[0]
         );
         setBody(model?.children[0]?.children[0]?.children[0]);
-        // modelRef.current = model;
         setIsReady(true);
       }
     }, 1000);
@@ -166,20 +163,20 @@ function App() {
     }
   }
   
-  function body_movement(part, data){
-      part.rotation.y += data.rot_y/data.frequency;
-  }
+  // function body_movement(part, data){
+  //     part.rotation.y += data.rot_y/data.frequency;
+  // }
 
-  function body_reverse_movement_arm(part, data){
-      part.rotation.z += data.rot_z/data.frequency;
-  }
+  // function body_reverse_movement_arm(part, data){
+  //     part.rotation.z += data.rot_z/data.frequency;
+  // }
 
-  function body_reverse_movement_upleg(part, data){
-      part.rotation.y -= data.rot_y/data.frequency;
-  }
-  function body_reverse_movement_leg(part, data){
-    part.rotation.y += data.rot_y/data.frequency;
-}
+  // function body_reverse_movement_upleg(part, data){
+  //     part.rotation.y -= data.rot_y/data.frequency;
+  // }
+  // function body_reverse_movement_leg(part, data){
+  //   part.rotation.y += data.rot_y/data.frequency;
+  // }
 
   // Part Position Movement
   function position_movement(part, data) {
@@ -192,7 +189,7 @@ function App() {
   return (
     <div className="App">
       <div>
-        <a-scene>
+        <a-scene vr-mode-ui="enabled: true">
           <a-camera id="camera" position="0 1 2"></a-camera>
           <a-entity
             id="mouseCursor"
@@ -217,8 +214,6 @@ function App() {
             id="room"
             src="#room_704"
             position="0 0 0"
-            // For Ipad to look at the model
-            // camera="look-controls"
           ></a-gltf-model>
           <a-gltf-model
             id="model"
@@ -240,7 +235,6 @@ function App() {
           <div className="indicator">X = {data.x}</div>
           <div className="indicator">Y = {data.y}</div>
         </div>
-        {/* <button onClick={changeAvatar}>click me</button> */}
       </div>
     </div>
   );
